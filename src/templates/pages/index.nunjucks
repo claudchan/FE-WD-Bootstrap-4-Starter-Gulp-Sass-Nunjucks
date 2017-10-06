@@ -1,0 +1,69 @@
+<!-- Page config -->
+{% extends "layouts/default.nunjucks" %}
+{% set pageTitle = "Home" %}
+{% set activeMenu = "home" %}
+
+
+<!-- Page head -->
+{% block head %}
+
+{% endblock %}
+
+
+<!-- Page content -->
+{% block content %}
+<div class="container">
+
+  <h3>Guide</h3>
+  <ul>
+    <li>install dependencies: run <code>npm install</code></li>
+    <li>development: run <code>gulp</code></li>
+    <li>build: run <code>gulp build</code></li>
+    <li>build serve: run <code>gulp build:serve</code></li>
+  </ul>
+
+  <h3>Front-end Framework</h3>
+  <ul>
+    <li><a href="//getbootstrap.com/" target="_blank">Bootstrap 4.0</a></li>
+  </ul>
+
+  <h3>JavaScript framework</h3>
+  <ul>
+    <li><a href="//vuejs.org" target="_blank">Vue.js</a></li>
+  </ul>
+
+  <h3>Templating Engine</h3>
+  <ul>
+    <li><a href="//mozilla.github.io/nunjucks/" target="_blank">Nunjucks</a></li>
+  </ul>
+
+  <hr>
+
+  <div class="well" id="app"><span v-text="message"></span></div>
+
+</div>
+{% endblock %}
+
+
+<!-- Page modals -->
+{% block modals %}
+
+{% endblock %}
+
+
+<!-- Page scripts -->
+{% block scripts %}
+
+  <script>
+    $(function() {
+      var app = new Vue({
+        delimiters: ['${','}'],
+        el: '#app',
+        data: {
+          message: 'Hello Vue!'
+        }
+      });
+    });
+  </script>
+
+{% endblock %}

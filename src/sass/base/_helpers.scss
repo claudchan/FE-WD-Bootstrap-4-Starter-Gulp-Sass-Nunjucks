@@ -1,0 +1,101 @@
+.text-normal {
+  @include font-size(1.4);
+}
+.text-sm {
+  @include font-size(0.8);
+}
+.text-md {
+  @include font-size(1.6);
+  @media (min-width: 768px) {
+    @include font-size(1.8);
+  }
+}
+.text-lg {
+  @include font-size(1.8);
+  @media (min-width: 768px) {
+    @include font-size(2);
+  }
+}
+.text-2x {
+  @include font-size(2.8);
+  @media (min-width: 768px) {
+    @include font-size(3.2);
+  }
+}
+.text-3x {
+  @include font-size(3.8);
+  @media (min-width: 768px) {
+    @include font-size(4.2);
+  }
+}
+.text-4x {
+  @include font-size(4.9);
+  @media (min-width: 768px) {
+    @include font-size(5.3);
+  }
+}
+.text-5x {
+  @include font-size(6);
+  @media (min-width: 768px) {
+    @include font-size(6.4);
+  }
+}
+.text-6x {
+  @include font-size(7.2);
+  @media (min-width: 768px) {
+    @include font-size(7.6);
+  }
+}
+.text-center {
+  .img-responsive {
+    display: inline-block;
+  }
+}
+
+.visible-xxs,
+.visible-xxs-block,
+.visible-xxs-inline,
+.visible-xxs-inline-block {
+  display: none !important;
+}
+@media (max-width: 480px) {
+  .visible-xxs {
+    display: block !important;
+  }
+  table.visible-xxs {
+    display: table;
+  }
+  tr.visible-xxs {
+    display: table-row !important;
+  }
+  th.visible-xxs,
+  td.visible-xxs {
+    display: table-cell !important;
+  }
+  .visible-xxs-block {
+    display: block !important;
+  }
+  .visible-xxs-inline {
+    display: inline !important;
+  }
+  .visible-xxs-inline-block {
+    display: inline-block !important;
+  }
+}
+.hidden-xxs {
+  @media (max-width: 480px) {
+    display: none !important;
+  }
+}
+.block-xxs {
+  @media (max-width: 480px) {
+    display: block;
+    width: 100%;
+  }
+}
+.block-xs {
+  @media (max-width: 767px) {
+    display: block;
+  }
+}
+

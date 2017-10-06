@@ -1,0 +1,35 @@
+{
+  "name": "fe-wd-bootstrap-4-starter-gulp-sass-nunjucks",
+  "version": "1.0.0",
+  "description": "Front-end web development Bootstrap 4 starter",
+  "scripts": {
+    "start": "npm install",
+    "yarn": "yarn install",
+    "serve": "gulp",
+    "build": "gulp build",
+    "build-serve": "gulp build:serve"
+  },
+  "author": "claudchan",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/claudchan/fe-wd-bootstrap-4-starter-gulp-sass-nunjucks.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "install": "^0.10.1"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.18.13",
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^4.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-html-replace": "^1.6.2",
+    "gulp-nunjucks-render": "^2.2.1",
+    "gulp-plumber": "^1.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^3.1.0",
+    "gulp-sourcemaps": "^2.6.0",
+    "gulp-uglify": "^3.0.0"
+  }
+}

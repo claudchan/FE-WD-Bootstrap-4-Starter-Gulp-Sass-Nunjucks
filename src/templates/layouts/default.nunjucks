@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>{%if pageTitle != '' %} {{ pageTitle }} | {% endif %} Front-end web development Bootstrap 4 starter</title>
+
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/app.min.css">
+
+  <script src="js/modernizr-3.5.0-respond-1.4.2.min.js"></script>
+
+  {% block head %} {% endblock %}
+
+</head>
+<body>
+
+  <div class="page" id="page">
+
+    {% include "partials/header.nunjucks" %}
+
+    {% include "partials/navbar.nunjucks" %}
+
+    {% block content %} {% endblock %}
+
+  </div>
+
+  {% include "partials/footer.nunjucks" %}
+
+  {% block modals %} {% endblock %}
+
+  <script src="js/jquery.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/vendors.min.js"></script>
+  <script src="js/app.min.js"></script>
+
+  {% block scripts %} {% endblock %}
+
+</body>
+</html>

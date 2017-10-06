@@ -1,0 +1,9 @@
+// Vendor Prefixed Properties
+// Usage: @include vendor('border-radius', '10px');
+@mixin vendor($prop, $args) {
+  -webkit-#{$prop}: $args;
+  -moz-#{$prop}: $args;
+  -ms-#{$prop}: $args;
+  -o-#{$prop}: $args;
+  #{$prop}: $args;
+}

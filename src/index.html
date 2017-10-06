@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title> Home |  Front-end web development Bootstrap 4 starter</title>
+
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/app.min.css">
+
+  <script src="js/modernizr-3.5.0-respond-1.4.2.min.js"></script>
+
+  
+
+
+
+</head>
+<body>
+
+  <div class="page" id="page">
+
+    <header>
+  <div class="container">
+    <h1>
+      Front-end web development Bootstrap 4 starter
+    </h1>
+  </div>
+</header>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item  active ">
+          <a href="#"class="nav-link">Home <span class="sr-only">(current)</span> </a>
+        </li>
+        <li class="nav-item ">
+          <a href="#"class="nav-link">Page</a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+    
+<div class="container">
+
+  <h3>Guide</h3>
+  <ul>
+    <li>install dependencies: run <code>npm install</code></li>
+    <li>development: run <code>gulp</code></li>
+    <li>build: run <code>gulp build</code></li>
+    <li>build serve: run <code>gulp build:serve</code></li>
+  </ul>
+
+  <h3>Front-end Framework</h3>
+  <ul>
+    <li><a href="//getbootstrap.com/" target="_blank">Bootstrap 4.0</a></li>
+  </ul>
+
+  <h3>JavaScript framework</h3>
+  <ul>
+    <li><a href="//vuejs.org" target="_blank">Vue.js</a></li>
+  </ul>
+
+  <h3>Templating Engine</h3>
+  <ul>
+    <li><a href="//mozilla.github.io/nunjucks/" target="_blank">Nunjucks</a></li>
+  </ul>
+
+  <hr>
+
+  <div class="well" id="app"><span v-text="message"></span></div>
+
+</div>
+
+
+  </div>
+
+  <footer>
+  <div class="container">
+    <hr>
+    <h3>Sticky Footer</h3>
+    <hr>
+  </div>
+</footer>
+
+  
+
+
+
+  <script src="js/jquery.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/vendors.min.js"></script>
+  <script src="js/app.min.js"></script>
+
+  
+
+  <script>
+    $(function() {
+      var app = new Vue({
+        delimiters: ['${','}'],
+        el: '#app',
+        data: {
+          message: 'Hello Vue!'
+        }
+      });
+    });
+  </script>
+
+
+
+</body>
+</html>

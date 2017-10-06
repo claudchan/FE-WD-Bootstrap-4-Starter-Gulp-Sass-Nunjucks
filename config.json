@@ -1,0 +1,21 @@
+{
+  "path": {
+    "src": "./src",
+    "build": "./build"
+  },
+  "jsConcatFiles": [
+    "src/js/vendors/mobile-detect.min.js",
+    "src/js/vendors/mobile-detect-modernizr.js",
+    "src/js/vendors/cssua.min.js",
+    "src/js/vendors/vue.min.js",
+    "src/js/vendors/**/*.js"
+  ],
+  "buildFilesFoldersRemove": [
+    "build/**/readme.txt",
+    "build/sass/",
+    "build/js/!(*.min.js)",
+    "build/templates/",
+    "build/maps/",
+    "build/**/*.map"
+  ]
+}
