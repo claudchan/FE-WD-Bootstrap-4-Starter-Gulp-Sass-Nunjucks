@@ -7,6 +7,7 @@
 */
 
 var gulp = require('gulp'),
+  watch = require('gulp-watch'),
   config = require('./config.json'),
   sass = require('gulp-sass'),
   sourcemaps = require('gulp-sourcemaps'),
@@ -86,8 +87,9 @@ gulp.task('styles', function () {
 });
 
 // Nunjucks tasks
-gulp.task('nunjucks', function () {
-  return gulp.src(config.path.src + '/templates/pages/**/*.+(html|nunjucks)')
+// task to render html
+gulp.task('nunjucks:render', function () {
+  return watch(config.path.src + '/templates/pages/**/*.+(html|nunjucks)', { ignoreInitial: false })
     // Renders template with nunjucks
     .pipe(
       nunjucksRender({
@@ -96,6 +98,12 @@ gulp.task('nunjucks', function () {
     )
     // Output files in app folder
     .pipe(gulp.dest(config.path.src));
+});
+
+// task to reload after nunjuck's rendered
+gulp.task('nunjucks', ['nunjucks:render'], function (done) {
+  browserSync.reload();
+  done();
 });
 
 // Browser-Sync tasks
@@ -108,7 +116,7 @@ gulp.task('browser-sync', function () {
 });
 
 // Build tasks
-// clean out all files and folders from build folder
+// task to clean out all files and folders from build folder
 gulp.task('build:clean', ['nunjucks', 'scripts', 'styles'], function () {
   return del([
     config.path.build+'/**'
