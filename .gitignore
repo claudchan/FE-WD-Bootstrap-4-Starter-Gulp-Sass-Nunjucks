@@ -33,8 +33,6 @@ node_modules/
 bower_components/
 .sass-cache
 *.css.map
-src/js/vendors.js
-src/js/vendors.min.js
 build/
 dist/
 maps/
