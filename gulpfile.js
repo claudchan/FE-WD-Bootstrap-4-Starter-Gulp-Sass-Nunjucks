@@ -97,12 +97,13 @@ gulp.task('nunjucks:render', function () {
       })
     )
     // Output files in app folder
-    .pipe(gulp.dest(config.path.src));
+    .pipe(gulp.dest(config.path.src))
+    .pipe(reload({stream: true}));
 });
 
 // task to reload after nunjuck's rendered
 gulp.task('nunjucks', ['nunjucks:render'], function (done) {
-  browserSync.reload();
+  reload;
   done();
 });
 
