@@ -22,12 +22,23 @@ var gulp = require('gulp'),
   nunjucksRender = require('gulp-nunjucks-render'),
   htmlreplace = require('gulp-html-replace');
 
+// BrowserSync tasks
+gulp.task('browserSync', function() {
+  browserSync.init({
+    server: {
+      baseDir: config.path.src
+    },
+    notify: false,
+    ghostMode: false
+  });
+});
+
 // Scripts tasks
 gulp.task('scripts:vendors', function () {
   return gulp.src(config.jsConcatFiles)
     .pipe(plumber())
     .pipe(sourcemaps.init())
-      .pipe(concat('vendors.js'))
+    .pipe(concat('vendors.js'))
     .pipe(sourcemaps.write('../maps'))
     .pipe(gulp.dest(config.path.src + '/js/'));
 });
@@ -35,12 +46,12 @@ gulp.task('scripts:vendors:min', ['scripts:vendors'], function () {
   return gulp.src(config.path.src + '/js/vendors.js')
     .pipe(plumber())
     .pipe(sourcemaps.init())
-      .pipe(uglify())
-      .pipe(
-        rename({
-          suffix: '.min'
-        })
-      )
+    .pipe(uglify())
+    .pipe(
+      rename({
+        suffix: '.min'
+      })
+    )
     .pipe(sourcemaps.write('../maps'))
     .pipe(gulp.dest(config.path.src + '/js/'));
 });
@@ -48,12 +59,12 @@ gulp.task('scripts:app', function () {
   return gulp.src(config.path.src + '/js/app.js')
     .pipe(plumber())
     .pipe(sourcemaps.init())
-      .pipe(uglify())
-      .pipe(
-        rename({
-          suffix: '.min'
-        })
-      )
+    .pipe(uglify())
+    .pipe(
+      rename({
+        suffix: '.min'
+      })
+    )
     .pipe(sourcemaps.write('../maps'))
     .pipe(gulp.dest(config.path.src + '/js/'));
 });
@@ -66,18 +77,19 @@ gulp.task('styles', function () {
     .pipe(sass().on('error', sass.logError))
     .pipe(gulp.dest(config.path.src + '/css'))
     .pipe(sourcemaps.init())
-      .pipe(
-        sass({
-          outputStyle: 'compressed'
-        })
-        .on('error', sass.logError)
-      )
-      .pipe(
-        rename({
-          suffix: '.min'
-        })
-      )
-      .pipe(autoprefixer({
+    .pipe(
+      sass({
+        outputStyle: 'compressed'
+      }
+    )
+    .on('error', sass.logError))
+    .pipe(
+      rename({
+        suffix: '.min'
+      })
+    )
+    .pipe(
+      autoprefixer({
         browsers: ['last 2 versions'],
         cascade: false
       })
@@ -88,8 +100,8 @@ gulp.task('styles', function () {
 
 // Nunjucks tasks
 // task to render html
-gulp.task('nunjucks:render', function () {
-  return watch(config.path.src + '/templates/pages/**/*.+(html|nunjucks)', { ignoreInitial: false })
+gulp.task('nunjucks', function () {
+  return gulp.src(config.path.src + '/templates/pages/**/*.+(html|nunjucks)')
     // Renders template with nunjucks
     .pipe(
       nunjucksRender({
@@ -97,28 +109,12 @@ gulp.task('nunjucks:render', function () {
       })
     )
     // Output files in app folder
-    .pipe(gulp.dest(config.path.src))
-    .pipe(reload({stream: true}));
-});
-
-// task to reload after nunjuck's rendered
-gulp.task('nunjucks', ['nunjucks:render'], function (done) {
-  reload;
-  done();
-});
-
-// Browser-Sync tasks
-gulp.task('browser-sync', function () {
-  browserSync.init({
-    server: {
-      baseDir: config.path.src
-    }
-  });
+    .pipe(gulp.dest(config.path.src));
 });
 
 // Build tasks
 // task to clean out all files and folders from build folder
-gulp.task('build:clean', ['nunjucks', 'scripts', 'styles'], function () {
+gulp.task('build:clean', ['nunjucks', 'scripts:vendors', 'scripts:vendors:min', 'scripts:app', 'styles'], function () {
   return del([
     config.path.build+'/**'
   ]);
@@ -135,11 +131,15 @@ gulp.task('build:remove', ['build:copy'], function () {
   return del(config.buildFilesFoldersRemove);
 });
 
-// task to removed unwanted build files
+// task to replace paths
 gulp.task('build:html', ['build:remove'], function () {
   return gulp.src(config.path.build+'/**/*.html')
     .pipe(htmlreplace({
-        'js': {
+        'app-css': {
+          src: [['css', 'app.min.css']],
+          tpl: '<link rel="stylesheet" href="%s/%s">'
+        },
+        'app-js': {
           src: [['js', 'app.min.js']],
           tpl: '<script src="%s/%s"></script>'
         }
@@ -163,14 +163,38 @@ gulp.task('build:serve', function () {
 });
 
 // Watch tasks
-gulp.task ('watch', function () {
+gulp.task('watch', function () {
   gulp.watch(config.path.src+'/templates/**/*.+(html|nunjucks)', ['nunjucks']);
-  gulp.watch(config.path.src+'/sass/**/*.scss', ['styles']);
-  gulp.watch(config.path.src+'/js/vendors/**/*.js', ['scripts:vendors', 'scripts:vendors:min']);
-  gulp.watch(config.path.src+'/js/app.js', ['scripts:app']);
-  gulp.watch(config.path.src+'/**/*.+(html|js|css)', reload);
+  gulp.watch(config.path.src+'/sass/**/*.scss', ['waitForStyles']);
+  gulp.watch(config.path.src+'/js/vendors/**/*.js', ['waitForVendors']);
+  gulp.watch(config.path.src+'/js/app.js', ['waitForScripts']);
+  gulp.watch([config.path.src+'/**/*.+(html)', '!'+config.path.src+'/templates/**/*'], ['waitForHTML']);
+});
+
+gulp.task('waitForStyles', ['styles'], function() {
+  return gulp.src(config.path.src+'/css/*.css')
+    .pipe(browserSync.stream());
+});
+
+gulp.task('waitForVendors', ['scripts:vendors', 'scripts:vendors:min'], function() {
+  browserSync.reload();
+});
+
+gulp.task('waitForScripts', ['scripts:app'], function() {
+  browserSync.reload();
+});
+
+gulp.task('waitForHTML', function() {
+  return gulp.src(config.path.src+'/**/*.html')
+    .pipe(
+      watch(
+        config.path.src+'/**/*.+(html)'
+      )
+    )
+    .pipe(plumber())
+    .pipe(browserSync.stream());
 });
 
 // Gulp default
-gulp.task('default', ['scripts', 'styles', 'nunjucks', 'browser-sync', 'watch']);
+gulp.task('default', ['browserSync', 'scripts', 'styles', 'nunjucks', 'watch']);
 
