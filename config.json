@@ -1,7 +1,7 @@
 {
   "path": {
-    "src": "./src",
-    "build": "./build"
+    "src": "src",
+    "build": "build"
   },
   "jsConcatFiles": [
     "src/js/vendors/mobile-detect.min.js",
