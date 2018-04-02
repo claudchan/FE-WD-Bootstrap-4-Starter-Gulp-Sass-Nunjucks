@@ -122,7 +122,7 @@ gulp.task('build:clean', ['nunjucks', 'scripts:vendors', 'scripts:vendors:min', 
 
 // task to create build directory of all files
 gulp.task('build:copy', ['build:clean'], function () {
-  return gulp.src([config.path.src+'/**/*/', '!'+config.path.src+'/templates', '!'+config.path.src+'/maps'])
+  return gulp.src(config.buildFilesFoldersCopy)
     .pipe(gulp.dest(config.path.build));
 });
 
