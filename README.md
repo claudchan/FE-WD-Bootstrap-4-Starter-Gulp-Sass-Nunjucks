@@ -6,6 +6,11 @@ Front-end web development Bootstrap 4 starter
 
 Require [Node.js](https://nodejs.org/)
 
+Install Gulp (if you don't have it)
+```
+npm install gulp-cli -g
+```
+
 * install dependencies: `run npm install`
 * development: `run gulp`
 * build: `run gulp build`

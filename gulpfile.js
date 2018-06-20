@@ -9,9 +9,11 @@
 var gulp = require('gulp'),
   watch = require('gulp-watch'),
   config = require('./config.json'),
+  postcss = require('gulp-postcss'),
+  cssnano = require('cssnano'),
+  autoprefixer = require('autoprefixer'),
   sass = require('gulp-sass'),
   sourcemaps = require('gulp-sourcemaps'),
-  autoprefixer = require('gulp-autoprefixer'),
   browserSync = require('browser-sync').create(),
   reload = browserSync.reload,
   concat = require('gulp-concat'),
@@ -75,23 +77,20 @@ gulp.task('styles', function () {
   return gulp.src(config.path.src + '/sass/app.scss')
     .pipe(plumber())
     .pipe(sass().on('error', sass.logError))
+    .pipe(postcss([
+      autoprefixer({
+        browsers: ['last 2 versions']
+      })
+    ]))
     .pipe(gulp.dest(config.path.src + '/css'))
     .pipe(sourcemaps.init())
-    .pipe(
-      sass({
-        outputStyle: 'compressed'
-      }
-    )
-    .on('error', sass.logError))
+    .pipe(sass().on('error', sass.logError))
+    .pipe(postcss([
+      cssnano
+    ]))
     .pipe(
       rename({
         suffix: '.min'
-      })
-    )
-    .pipe(
-      autoprefixer({
-        browsers: ['last 2 versions'],
-        cascade: false
       })
     )
     .pipe(sourcemaps.write('../maps'))
