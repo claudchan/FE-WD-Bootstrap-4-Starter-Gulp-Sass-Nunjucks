@@ -1,25 +1,21 @@
 {
   "path": {
-    "src": "src",
-    "build": "build"
+    "src": "src/",
+    "build": "build/"
   },
   "jsConcatFiles": [
-    "src/js/vendors/mobile-detect.min.js",
-    "src/js/vendors/mobile-detect-modernizr.js",
-    "src/js/vendors/cssua.min.js",
-    "src/js/vendors/vue.min.js",
-    "src/js/vendors/**/*.js"
+    "src/html/js/vendors/mobile-detect.min.js",
+    "src/html/js/vendors/mobile-detect-modernizr.js",
+    "src/html/js/vendors/cssua.min.js",
+    "src/html/js/vendors/vue.min.js",
+    "src/html/js/vendors/**/*.js"
   ],
   "buildFilesFoldersCopy": [
-    "src/**/*/",
-    "!src/js/vendors",
-    "!src/js/vendors/**/*",
-    "!src/maps",
-    "!src/maps/**/*",
-    "!src/sass",
-    "!src/sass/**/*",
-    "!src/templates",
-    "!src/templates/**/*"
+    "src/html/**/*/",
+    "!src/html/js/vendors/",
+    "!src/html/js/vendors/**/*",
+    "!src/html/maps/",
+    "!src/html/maps/**/*"
   ],
   "buildFilesFoldersRemove": [
     "build/**/readme.txt",

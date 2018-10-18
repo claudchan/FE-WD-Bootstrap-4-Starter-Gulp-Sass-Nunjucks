@@ -19,16 +19,18 @@ var gulp = require('gulp'),
   concat = require('gulp-concat'),
   plumber = require('gulp-plumber'),
   uglify = require('gulp-uglify'),
+  babel = require('gulp-babel'),
   rename = require('gulp-rename'),
   del = require('del'),
   nunjucksRender = require('gulp-nunjucks-render'),
-  htmlreplace = require('gulp-html-replace');
+  htmlreplace = require('gulp-html-replace'),
+  replace = require('gulp-replace');
 
 // BrowserSync tasks
 gulp.task('browserSync', function() {
   browserSync.init({
     server: {
-      baseDir: config.path.src
+      baseDir: config.path.src + 'html/'
     },
     notify: false,
     ghostMode: false
@@ -42,10 +44,10 @@ gulp.task('scripts:vendors', function () {
     .pipe(sourcemaps.init())
     .pipe(concat('vendors.js'))
     .pipe(sourcemaps.write('../maps'))
-    .pipe(gulp.dest(config.path.src + '/js/'));
+    .pipe(gulp.dest(config.path.src + 'html/js/'));
 });
 gulp.task('scripts:vendors:min', ['scripts:vendors'], function () {
-  return gulp.src(config.path.src + '/js/vendors.js')
+  return gulp.src(config.path.src + 'html/js/vendors.js')
     .pipe(plumber())
     .pipe(sourcemaps.init())
     .pipe(uglify())
@@ -55,12 +57,15 @@ gulp.task('scripts:vendors:min', ['scripts:vendors'], function () {
       })
     )
     .pipe(sourcemaps.write('../maps'))
-    .pipe(gulp.dest(config.path.src + '/js/'));
+    .pipe(gulp.dest(config.path.src + 'html/js/'));
 });
 gulp.task('scripts:app', function () {
-  return gulp.src(config.path.src + '/js/app.js')
+  return gulp.src(config.path.src + 'html/js/app.js')
     .pipe(plumber())
     .pipe(sourcemaps.init())
+    .pipe(babel({
+      presets: ['es2015']
+    }))
     .pipe(uglify())
     .pipe(
       rename({
@@ -68,13 +73,13 @@ gulp.task('scripts:app', function () {
       })
     )
     .pipe(sourcemaps.write('../maps'))
-    .pipe(gulp.dest(config.path.src + '/js/'));
+    .pipe(gulp.dest(config.path.src + 'html/js/'));
 });
 gulp.task('scripts', ['scripts:vendors', 'scripts:vendors:min', 'scripts:app']);
 
 // Styles tasks
 gulp.task('styles', function () {
-  return gulp.src(config.path.src + '/sass/app.scss')
+  return gulp.src(config.path.src + 'sass/app.scss')
     .pipe(plumber())
     .pipe(sass().on('error', sass.logError))
     .pipe(postcss([
@@ -82,7 +87,7 @@ gulp.task('styles', function () {
         browsers: ['last 2 versions']
       })
     ]))
-    .pipe(gulp.dest(config.path.src + '/css'))
+    .pipe(gulp.dest(config.path.src + 'html/css'))
     .pipe(sourcemaps.init())
     .pipe(sass().on('error', sass.logError))
     .pipe(postcss([
@@ -94,28 +99,29 @@ gulp.task('styles', function () {
       })
     )
     .pipe(sourcemaps.write('../maps'))
-    .pipe(gulp.dest(config.path.src + '/css'));
+    .pipe(gulp.dest(config.path.src + 'html/css'));
 });
 
 // Nunjucks tasks
 // task to render html
 gulp.task('nunjucks', function () {
-  return gulp.src(config.path.src + '/templates/pages/**/*.+(html|nunjucks)')
+  return gulp.src(config.path.src + 'templates/pages/**/*.+(html|nunjucks)')
+    .pipe(plumber())
     // Renders template with nunjucks
     .pipe(
       nunjucksRender({
-        path: [config.path.src + '/templates']
+        path: [config.path.src + 'templates/']
       })
     )
     // Output files in app folder
-    .pipe(gulp.dest(config.path.src));
+    .pipe(gulp.dest(config.path.src + 'html/'));
 });
 
 // Build tasks
 // task to clean out all files and folders from build folder
 gulp.task('build:clean', ['nunjucks', 'scripts:vendors', 'scripts:vendors:min', 'scripts:app', 'styles'], function () {
   return del([
-    config.path.build+'/**'
+    config.path.build + '**'
   ]);
 });
 
@@ -132,21 +138,26 @@ gulp.task('build:remove', ['build:copy'], function () {
 
 // task to replace paths
 gulp.task('build:html', ['build:remove'], function () {
-  return gulp.src(config.path.build+'/**/*.html')
-    .pipe(htmlreplace({
-        'app-css': {
-          src: [['css', 'app.min.css']],
-          tpl: '<link rel="stylesheet" href="%s/%s">'
-        },
-        'app-js': {
-          src: [['js', 'app.min.js']],
-          tpl: '<script src="%s/%s"></script>'
-        }
-    }, {
-      keepUnassigned: false,
-      keepBlockTags: false,
-      resolvePaths: false
-    }))
+  return gulp.src(config.path.build + '/**/*.html')
+    // .pipe(htmlreplace({
+    //     'app-css': {
+    //       src: [['css', 'app.min.css']],
+    //       tpl: '<link rel="stylesheet" href="%s/%s">'
+    //     },
+    //     'app-js': {
+    //       src: [['js', 'app.min.js']],
+    //       tpl: '<script src="%s/%s"></script>'
+    //     }
+    // }, {
+    //   keepUnassigned: false,
+    //   keepBlockTags: false,
+    //   resolvePaths: false
+    // }))
+    .pipe(replace('app.css', 'app.min.css'))
+    .pipe(replace('app.js', 'app.min.js'))
+    .pipe(replace('<!-- build:app-css -->', ''))
+    .pipe(replace('<!-- build:app-js -->', ''))
+    .pipe(replace('<!-- endbuild -->', ''))
     .pipe(gulp.dest(config.path.build));
 });
 
@@ -163,15 +174,15 @@ gulp.task('build:serve', function () {
 
 // Watch tasks
 gulp.task('watch', function () {
-  gulp.watch(config.path.src+'/templates/**/*.+(html|nunjucks)', ['nunjucks']);
-  gulp.watch(config.path.src+'/sass/**/*.scss', ['waitForStyles']);
-  gulp.watch(config.path.src+'/js/vendors/**/*.js', ['waitForVendors']);
-  gulp.watch(config.path.src+'/js/app.js', ['waitForScripts']);
-  gulp.watch([config.path.src+'/**/*.+(html)', '!'+config.path.src+'/templates/**/*'], ['waitForHTML']);
+  gulp.watch(config.path.src + 'templates/**/*.+(html|nunjucks)', ['nunjucks']);
+  gulp.watch(config.path.src + 'sass/**/*.scss', ['waitForStyles']);
+  gulp.watch(config.path.src + 'html/js/vendors/**/*.js', ['waitForVendors']);
+  gulp.watch(config.path.src + 'html/js/app.js', ['waitForScripts']);
+  gulp.watch(config.path.src + 'html/**/*.+(html)', ['waitForHTML']);
 });
 
 gulp.task('waitForStyles', ['styles'], function() {
-  return gulp.src(config.path.src+'/css/*.css')
+  return gulp.src(config.path.src + 'html/css/*.css')
     .pipe(browserSync.stream());
 });
 
@@ -184,10 +195,10 @@ gulp.task('waitForScripts', ['scripts:app'], function() {
 });
 
 gulp.task('waitForHTML', function() {
-  return gulp.src(config.path.src+'/**/*.html')
+  return gulp.src(config.path.src + 'html/**/*.html')
     .pipe(
       watch(
-        config.path.src+'/**/*.+(html)'
+        config.path.src + 'html/**/*.+(html)'
       )
     )
     .pipe(plumber())

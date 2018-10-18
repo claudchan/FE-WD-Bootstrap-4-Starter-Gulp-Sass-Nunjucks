@@ -149,16 +149,10 @@
 
 .container, .container-fluid {
   -webkit-transition: width 0.35s ease-in-out;
-  -moz-transition: width 0.35s ease-in-out;
-  -ms-transition: width 0.35s ease-in-out;
-  -o-transition: width 0.35s ease-in-out;
   transition: width 0.35s ease-in-out; }
 
 a, .btn {
   -webkit-transition: all 0.35s ease-in-out;
-  -moz-transition: all 0.35s ease-in-out;
-  -ms-transition: all 0.35s ease-in-out;
-  -o-transition: all 0.35s ease-in-out;
   transition: all 0.35s ease-in-out; }
   a:focus, a:active:focus, a.active:focus, a.focus, a:active.focus, a.active.focus, .btn:focus, .btn:active:focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn.active.focus {
     outline: none; }
