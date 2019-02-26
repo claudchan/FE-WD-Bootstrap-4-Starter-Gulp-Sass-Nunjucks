@@ -1,6 +1,6 @@
 {
   "name": "fe-wd-bootstrap-4-starter-gulp-sass-nunjucks",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Front-end web development Bootstrap 4 starter",
   "scripts": {
     "start": "npm install",
