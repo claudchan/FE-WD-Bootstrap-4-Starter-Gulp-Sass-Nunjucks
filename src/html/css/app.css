@@ -1,175 +1,249 @@
 .text-normal {
   font-size: 14px;
-  font-size: 1.4rem; }
+  font-size: 1.4rem;
+}
 
 .text-sm {
   font-size: 8px;
-  font-size: 0.8rem; }
+  font-size: 0.8rem;
+}
 
 .text-md {
   font-size: 16px;
-  font-size: 1.6rem; }
-  @media (min-width: 768px) {
-    .text-md {
-      font-size: 18px;
-      font-size: 1.8rem; } }
+  font-size: 1.6rem;
+}
+@media (min-width: 768px) {
+  .text-md {
+    font-size: 18px;
+    font-size: 1.8rem;
+  }
+}
 
 .text-lg {
   font-size: 18px;
-  font-size: 1.8rem; }
-  @media (min-width: 768px) {
-    .text-lg {
-      font-size: 20px;
-      font-size: 2rem; } }
+  font-size: 1.8rem;
+}
+@media (min-width: 768px) {
+  .text-lg {
+    font-size: 20px;
+    font-size: 2rem;
+  }
+}
 
 .text-2x {
   font-size: 28px;
-  font-size: 2.8rem; }
-  @media (min-width: 768px) {
-    .text-2x {
-      font-size: 32px;
-      font-size: 3.2rem; } }
+  font-size: 2.8rem;
+}
+@media (min-width: 768px) {
+  .text-2x {
+    font-size: 32px;
+    font-size: 3.2rem;
+  }
+}
 
 .text-3x {
   font-size: 38px;
-  font-size: 3.8rem; }
-  @media (min-width: 768px) {
-    .text-3x {
-      font-size: 42px;
-      font-size: 4.2rem; } }
+  font-size: 3.8rem;
+}
+@media (min-width: 768px) {
+  .text-3x {
+    font-size: 42px;
+    font-size: 4.2rem;
+  }
+}
 
 .text-4x {
   font-size: 49px;
-  font-size: 4.9rem; }
-  @media (min-width: 768px) {
-    .text-4x {
-      font-size: 53px;
-      font-size: 5.3rem; } }
+  font-size: 4.9rem;
+}
+@media (min-width: 768px) {
+  .text-4x {
+    font-size: 53px;
+    font-size: 5.3rem;
+  }
+}
 
 .text-5x {
   font-size: 60px;
-  font-size: 6rem; }
-  @media (min-width: 768px) {
-    .text-5x {
-      font-size: 64px;
-      font-size: 6.4rem; } }
+  font-size: 6rem;
+}
+@media (min-width: 768px) {
+  .text-5x {
+    font-size: 64px;
+    font-size: 6.4rem;
+  }
+}
 
 .text-6x {
   font-size: 72px;
-  font-size: 7.2rem; }
-  @media (min-width: 768px) {
-    .text-6x {
-      font-size: 76px;
-      font-size: 7.6rem; } }
+  font-size: 7.2rem;
+}
+@media (min-width: 768px) {
+  .text-6x {
+    font-size: 76px;
+    font-size: 7.6rem;
+  }
+}
 
 .text-center .img-responsive {
-  display: inline-block; }
+  display: inline-block;
+}
 
 .visible-xxs,
 .visible-xxs-block,
 .visible-xxs-inline,
 .visible-xxs-inline-block {
-  display: none !important; }
+  display: none !important;
+}
 
 @media (max-width: 480px) {
   .visible-xxs {
-    display: block !important; }
-  table.visible-xxs {
-    display: table; }
-  tr.visible-xxs {
-    display: table-row !important; }
-  th.visible-xxs,
-  td.visible-xxs {
-    display: table-cell !important; }
-  .visible-xxs-block {
-    display: block !important; }
-  .visible-xxs-inline {
-    display: inline !important; }
-  .visible-xxs-inline-block {
-    display: inline-block !important; } }
+    display: block !important;
+  }
 
+  table.visible-xxs {
+    display: table;
+  }
+
+  tr.visible-xxs {
+    display: table-row !important;
+  }
+
+  th.visible-xxs,
+td.visible-xxs {
+    display: table-cell !important;
+  }
+
+  .visible-xxs-block {
+    display: block !important;
+  }
+
+  .visible-xxs-inline {
+    display: inline !important;
+  }
+
+  .visible-xxs-inline-block {
+    display: inline-block !important;
+  }
+}
 @media (max-width: 480px) {
   .hidden-xxs {
-    display: none !important; } }
+    display: none !important;
+  }
+}
 
 @media (max-width: 480px) {
   .block-xxs {
     display: block;
-    width: 100%; } }
+    width: 100%;
+  }
+}
 
 @media (max-width: 767px) {
   .block-xs {
-    display: block; } }
+    display: block;
+  }
+}
 
 .row-no-gap {
   margin-left: 0;
-  margin-right: 0; }
-  .row-no-gap > [class*=col-] {
-    padding-left: 0;
-    padding-right: 0; }
+  margin-right: 0;
+}
+.row-no-gap > [class*=col-] {
+  padding-left: 0;
+  padding-right: 0;
+}
 
 .row-gap-5 {
   margin-left: -5px;
-  margin-right: -5px; }
-  .row-gap-5 > [class*=col-] {
-    padding-left: 5px;
-    padding-right: 5px; }
+  margin-right: -5px;
+}
+.row-gap-5 > [class*=col-] {
+  padding-left: 5px;
+  padding-right: 5px;
+}
 
 .row-gap-10 {
   margin-left: -10px;
-  margin-right: -10px; }
-  .row-gap-10 > [class*=col-] {
-    padding-left: 10px;
-    padding-right: 10px; }
+  margin-right: -10px;
+}
+.row-gap-10 > [class*=col-] {
+  padding-left: 10px;
+  padding-right: 10px;
+}
 
 @media (max-width: 480px) {
   .col-xxs-1 {
-    width: 8.33333333%; }
+    width: 8.33333333%;
+  }
+
   .col-xxs-2 {
-    width: 16.66666667%; }
+    width: 16.66666667%;
+  }
+
   .col-xxs-3 {
-    width: 25%; }
+    width: 25%;
+  }
+
   .col-xxs-4 {
-    width: 33.33333333%; }
+    width: 33.33333333%;
+  }
+
   .col-xxs-5 {
-    width: 41.66666667%; }
+    width: 41.66666667%;
+  }
+
   .col-xxs-6 {
-    width: 50%; }
+    width: 50%;
+  }
+
   .col-xxs-7 {
-    width: 58.33333333%; }
+    width: 58.33333333%;
+  }
+
   .col-xxs-8 {
-    width: 66.66666667%; }
+    width: 66.66666667%;
+  }
+
   .col-xxs-9 {
-    width: 75%; }
+    width: 75%;
+  }
+
   .col-xxs-10 {
-    width: 83.33333333%; }
+    width: 83.33333333%;
+  }
+
   .col-xxs-12 {
     width: 100%;
-    float: none; } }
-
+    float: none;
+  }
+}
 .container, .container-fluid {
-  -webkit-transition: width 0.35s ease-in-out;
-  transition: width 0.35s ease-in-out; }
+  transition: width 0.35s ease-in-out;
+}
 
 a, .btn {
-  -webkit-transition: all 0.35s ease-in-out;
-  transition: all 0.35s ease-in-out; }
-  a:focus, a:active:focus, a.active:focus, a.focus, a:active.focus, a.active.focus, .btn:focus, .btn:active:focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn.active.focus {
-    outline: none; }
+  transition: all 0.35s ease-in-out;
+}
+a:focus, a:active:focus, a.active:focus, a.focus, a:active.focus, a.active.focus, .btn:focus, .btn:active:focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn.active.focus {
+  outline: none;
+}
 
 @media print {
   .container {
-    width: auto; } }
-
+    width: auto;
+  }
+}
 @-ms-viewport {
-  width: auto !important; }
-
+  width: auto !important;
+}
 @font-face {
   font-family: "Verveine";
   src: url("../fonts/Verveine.eot");
   src: url("../fonts/Verveine.eot?#iefix") format('embedded-opentype'), url("../fonts/Verveine.woff2") format("woff2"), url("../fonts/Verveine.woff") format("woff"), url("../fonts/Verveine.ttf") format("truetype"), url("../fonts/Verveine.svg") format("svg");
   font-weight: 400;
-  font-style: normal; }
-
+  font-style: normal;
+}
 body {
-  font-family: 'Verveine'; }
+  font-family: "Verveine";
+}

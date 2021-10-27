@@ -1,210 +1,157 @@
-/*
-  Gulp tasks
-  ==========
-  gulp
-  gulp build
-  gulp build:serve
-*/
+const gulp = require('gulp');
+const { src, dest, series, parallel } = require('gulp');
+const del = require('del');
+const config = require('./config.json');
+const postcss = require('gulp-postcss');
+const cssnano = require('cssnano');
+const autoprefixer = require('autoprefixer');
+const sass = require('gulp-sass')(require('sass'));
+const browsersync = require("browser-sync").create();
+const concat = require('gulp-concat');
+const plumber = require('gulp-plumber');
+const terser = require('gulp-terser');
+const rename = require('gulp-rename');
+const nunjucksRender = require('gulp-nunjucks-render');
+const replace = require('gulp-replace');
 
-var gulp = require('gulp'),
-  watch = require('gulp-watch'),
-  config = require('./config.json'),
-  postcss = require('gulp-postcss'),
-  cssnano = require('cssnano'),
-  autoprefixer = require('autoprefixer'),
-  sass = require('gulp-sass'),
-  sourcemaps = require('gulp-sourcemaps'),
-  browserSync = require('browser-sync').create(),
-  reload = browserSync.reload,
-  concat = require('gulp-concat'),
-  plumber = require('gulp-plumber'),
-  uglify = require('gulp-uglify'),
-  babel = require('gulp-babel'),
-  rename = require('gulp-rename'),
-  del = require('del'),
-  nunjucksRender = require('gulp-nunjucks-render'),
-  htmlreplace = require('gulp-html-replace'),
-  replace = require('gulp-replace');
-
-// BrowserSync tasks
-gulp.task('browserSync', function() {
-  browserSync.init({
+// BrowserSync
+function browserSync(done) {
+  browsersync.init({
     server: {
       baseDir: config.path.src + 'html/'
     },
     notify: false,
     ghostMode: false
   });
-});
+  done();
+}
 
-// Scripts tasks
-gulp.task('scripts:vendors', function () {
-  return gulp.src(config.jsConcatFiles)
-    .pipe(plumber())
-    .pipe(sourcemaps.init())
-    .pipe(concat('vendors.js'))
-    .pipe(sourcemaps.write('../maps'))
-    .pipe(gulp.dest(config.path.src + 'html/js/'));
-});
-gulp.task('scripts:vendors:min', ['scripts:vendors'], function () {
-  return gulp.src(config.path.src + 'html/js/vendors.js')
-    .pipe(plumber())
-    .pipe(sourcemaps.init())
-    .pipe(uglify())
-    .pipe(
-      rename({
-        suffix: '.min'
-      })
-    )
-    .pipe(sourcemaps.write('../maps'))
-    .pipe(gulp.dest(config.path.src + 'html/js/'));
-});
-gulp.task('scripts:app', function () {
-  return gulp.src(config.path.src + 'html/js/app.js')
-    .pipe(plumber())
-    .pipe(sourcemaps.init())
-    .pipe(babel({
-      presets: ['es2015']
-    }))
-    .pipe(uglify())
-    .pipe(
-      rename({
-        suffix: '.min'
-      })
-    )
-    .pipe(sourcemaps.write('../maps'))
-    .pipe(gulp.dest(config.path.src + 'html/js/'));
-});
-gulp.task('scripts', ['scripts:vendors', 'scripts:vendors:min', 'scripts:app']);
+// BrowserSync Reload
+function browserSyncReload(done) {
+  browsersync.reload();
+  done();
+}
 
-// Styles tasks
-gulp.task('styles', function () {
+// Clean assets
+// function clean() {
+//   return del(["./_site/assets/"]);
+// }
+
+// CSS task
+function css(cb) {
   return gulp.src(config.path.src + 'sass/app.scss')
     .pipe(plumber())
     .pipe(sass().on('error', sass.logError))
-    .pipe(postcss([
-      autoprefixer({
-        browsers: ['last 2 versions']
-      })
-    ]))
+    .pipe(postcss([ autoprefixer() ]))
     .pipe(gulp.dest(config.path.src + 'html/css'))
-    .pipe(sourcemaps.init())
-    .pipe(sass().on('error', sass.logError))
-    .pipe(postcss([
-      cssnano
-    ]))
+    .pipe(postcss([ cssnano() ]))
     .pipe(
       rename({
         suffix: '.min'
       })
     )
-    .pipe(sourcemaps.write('../maps'))
-    .pipe(gulp.dest(config.path.src + 'html/css'));
-});
+    .pipe(plumber.stop())
+    .pipe(gulp.dest(config.path.src + 'html/css'))
+    .pipe(browsersync.stream());
+  cb();
+}
 
-// Nunjucks tasks
-// task to render html
-gulp.task('nunjucks', function () {
+// Vendors task
+function vendors(cb) {
+  return gulp.src(config.jsConcatFiles)
+    .pipe(plumber())
+    .pipe(concat('vendors.js'))
+    .pipe(gulp.dest(config.path.src + 'html/js/'))
+    .pipe(terser())
+    .pipe(
+      rename({
+        suffix: '.min'
+      })
+    )
+    .pipe(plumber.stop())
+    .pipe(gulp.dest(config.path.src + 'html/js/'))
+    .pipe(browsersync.stream());
+  cb();
+}
+
+// Scripts task
+function scripts(cb) {
+  return gulp.src(config.path.src + 'html/js/app.js')
+    .pipe(plumber())
+    .pipe(terser())
+    .pipe(
+      rename({
+        suffix: '.min'
+      })
+    )
+    .pipe(plumber.stop())
+    .pipe(gulp.dest(config.path.src + 'html/js/'))
+    .pipe(browsersync.stream());
+  cb();
+}
+
+// Nunjucks task
+function nunjucks(cb) {
   return gulp.src(config.path.src + 'templates/pages/**/*.+(html|nunjucks)')
     .pipe(plumber())
-    // Renders template with nunjucks
     .pipe(
       nunjucksRender({
         path: [config.path.src + 'templates/']
       })
     )
-    // Output files in app folder
-    .pipe(gulp.dest(config.path.src + 'html/'));
-});
+    .pipe(plumber.stop())
+    .pipe(gulp.dest(config.path.src + 'html/'))
+    .pipe(browsersync.stream());
+  cb();
+}
 
-// Build tasks
-// task to clean out all files and folders from build folder
-gulp.task('build:clean', ['nunjucks', 'scripts:vendors', 'scripts:vendors:min', 'scripts:app', 'styles'], function () {
-  return del([
-    config.path.build + '**'
-  ]);
-});
+// Watch files
+function watchFiles() {
+  gulp.watch(config.path.src + 'sass/**/*.scss', gulp.series(css, browserSyncReload));
+  gulp.watch(config.path.src + 'html/js/vendors/**/*.js', gulp.series(vendors, browserSyncReload));
+  gulp.watch(config.path.src + 'html/js/app.js', gulp.series(gulp.parallel(vendors, scripts), browserSyncReload));
+  gulp.watch(config.path.src + 'templates/**/*.+(html|nunjucks)', gulp.series(nunjucks, browserSyncReload));
+}
 
-// task to create build directory of all files
-gulp.task('build:copy', ['build:clean'], function () {
+// Build task
+function clean(done) {
+  return del([config.path.build + '**']);
+  done();
+}
+function copy(done) {
   return gulp.src(config.buildFilesFoldersCopy)
     .pipe(gulp.dest(config.path.build));
-});
-
-// task to removed unwanted build files
-gulp.task('build:remove', ['build:copy'], function () {
+  done();
+}
+function clear(done) {
   return del(config.buildFilesFoldersRemove);
-});
-
-// task to replace paths
-gulp.task('build:html', ['build:remove'], function () {
+  done();
+}
+function htmlcleanup(done) {
   return gulp.src(config.path.build + '/**/*.html')
-    // .pipe(htmlreplace({
-    //     'app-css': {
-    //       src: [['css', 'app.min.css']],
-    //       tpl: '<link rel="stylesheet" href="%s/%s">'
-    //     },
-    //     'app-js': {
-    //       src: [['js', 'app.min.js']],
-    //       tpl: '<script src="%s/%s"></script>'
-    //     }
-    // }, {
-    //   keepUnassigned: false,
-    //   keepBlockTags: false,
-    //   resolvePaths: false
-    // }))
     .pipe(replace('app.css', 'app.min.css'))
     .pipe(replace('app.js', 'app.min.js'))
     .pipe(replace('<!-- build:app-css -->', ''))
     .pipe(replace('<!-- build:app-js -->', ''))
     .pipe(replace('<!-- endbuild -->', ''))
     .pipe(gulp.dest(config.path.build));
-});
+  done();
+}
 
-gulp.task('build', ['build:html']);
+// define complex tasks
+const js = gulp.series(vendors, scripts);
+const build = gulp.series(gulp.parallel(css, vendors, scripts, nunjucks), clean, copy, clear, htmlcleanup);
+const watch = gulp.parallel(watchFiles, browserSync);
 
-// task to run build server for testing final app
-gulp.task('build:serve', function () {
-  browserSync.init({
-    server: {
-      baseDir: config.path.build
-    }
-  });
-});
-
-// Watch tasks
-gulp.task('watch', function () {
-  gulp.watch(config.path.src + 'templates/**/*.+(html|nunjucks)', ['nunjucks']);
-  gulp.watch(config.path.src + 'sass/**/*.scss', ['waitForStyles']);
-  gulp.watch(config.path.src + 'html/js/vendors/**/*.js', ['waitForVendors']);
-  gulp.watch(config.path.src + 'html/js/app.js', ['waitForScripts']);
-  gulp.watch(config.path.src + 'html/**/*.+(html)', ['waitForHTML']);
-});
-
-gulp.task('waitForStyles', ['styles'], function() {
-  return gulp.src(config.path.src + 'html/css/*.css')
-    .pipe(browserSync.stream());
-});
-
-gulp.task('waitForVendors', ['scripts:vendors', 'scripts:vendors:min'], function() {
-  browserSync.reload();
-});
-
-gulp.task('waitForScripts', ['scripts:app'], function() {
-  browserSync.reload();
-});
-
-gulp.task('waitForHTML', function() {
-  return gulp.src(config.path.src + 'html/**/*.html')
-    .pipe(
-      watch(
-        config.path.src + 'html/**/*.+(html)'
-      )
-    )
-    .pipe(plumber())
-    .pipe(browserSync.stream());
-});
-
-// Gulp default
-gulp.task('default', ['browserSync', 'scripts', 'styles', 'nunjucks', 'watch']);
-
+exports.css = css;
+exports.vendors = vendors;
+exports.scripts = scripts;
+exports.nunjucks = nunjucks;
+exports.js = js;
+exports.clean = clean;
+exports.copy = copy;
+exports.clear = clear;
+exports.htmlcleanup = htmlcleanup;
+exports.build = build;
+exports.watch = watch;
+exports.default = series(css, vendors, scripts, nunjucks, watch);

@@ -2,6 +2,7 @@
   "name": "fe-wd-bootstrap-4-starter-gulp-sass-nunjucks",
   "version": "1.1.0",
   "description": "Front-end web development Bootstrap 4 starter",
+  "main": "gulpfile.js",
   "scripts": {
     "start": "npm install",
     "yarn": "yarn install",
@@ -9,33 +10,33 @@
     "build": "gulp build",
     "build-serve": "gulp build:serve"
   },
-  "author": "claudchan",
+  "author": "Claud Chan",
+  "license": "MIT",
+  "project": {
+    "title": "Front-end web development Bootstrap 4 starter",
+    "url": "//localhost/FE-WD-Bootstrap-4-Starter-Gulp-Sass-Nunjucks/src/html/",
+    "platform": "HTML",
+    "icon": "<i class=\"icofont-ui-browser\"></i>"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/claudchan/fe-wd-bootstrap-4-starter-gulp-sass-nunjucks.git"
   },
-  "license": "MIT",
-  "dependencies": {},
   "devDependencies": {
-    "autoprefixer": "^8.2.0",
-    "babel-core": "^6.26.3",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-es2015": "^6.24.1",
-    "browser-sync": "^2.18.13",
-    "cssnano": "^3.10.0",
-    "del": "^3.0.0",
-    "gulp": "^3.9.1",
-    "gulp-babel": "^7.0.1",
+    "autoprefixer": "^9.8.6",
+    "browser-sync": "^2.26.12",
+    "cssnano": "^4.1.10",
+    "del": "^5.1.0",
+    "gulp": "^4.0.2",
     "gulp-concat": "^2.6.1",
     "gulp-html-replace": "^1.6.2",
-    "gulp-nunjucks-render": "^2.2.1",
-    "gulp-plumber": "^1.1.0",
-    "gulp-postcss": "^7.0.1",
-    "gulp-rename": "^1.2.2",
+    "gulp-nunjucks-render": "^2.2.3",
+    "gulp-plumber": "^1.2.1",
+    "gulp-postcss": "^8.0.0",
+    "gulp-rename": "^2.0.0",
     "gulp-replace": "^1.0.0",
-    "gulp-sass": "^3.1.0",
-    "gulp-sourcemaps": "^2.6.0",
-    "gulp-uglify": "^3.0.0",
-    "gulp-watch": "^4.3.11"
+    "gulp-sass": "^4.1.0",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-terser": "^1.3.2"
   }
 }
